@@ -1,15 +1,84 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8" />
     <title>My Flix</title>
   </head>
   <body>
-    <h1>Documentation</h1>
-    <p>This web application will provide users with access to information
-    about different movies, directors, and genres. Users will be able to sign
-    up, update their personal information, and create a list of their favorite
-    movies.
+    <h1>Documentation myFlix App</h1>
+    <p>
+      This web application will provide users with access to information about
+      different movies, directors, and genres. Users will be able to sign up,
+      update their personal information, and create a list of their favorite
+      movies.
     </p>
+    <table>
+      <thread>
+        <tr>
+          <th>Description</th>
+          <th>URL</th>
+          <th>HTTP method</th>
+          <th>Request body data format</th>
+          <th>Response body data format</th>
+        </tr>
+      </thread>
+
+      <tr>
+        <td>Get a list of all movies</td>
+        <td>/movies</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>
+          JSON object holding data about all movies. Structure:
+          <p>
+            { id: 1, title: "King Lion", genre: "family", description: "good to
+            watch with your family", director: "Walt Disney" },
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>Get data about a single movie by title</td>
+        <td>/movies/[title]</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>
+          JSON object holding data about a single movie. Structure same as
+          above.
+        </td>
+      </tr>
+      <tr>
+        <td>Get movies by genre</td>
+        <td>/genre/[genre]</td>
+        <td>GET</td>
+        <td>None</td>
+        <td>
+          JSON object holding data about a movie genre, Structure:
+          <p>
+            { id: 1, title: "King Lion", genre: "family", description: "good to
+            watch with your family", director: "Walt Disney" },
+          </p>
+        </td>
+      </tr>
+      <tr>
+        <td>Add a movie to the user's favorites list</td>
+        <td>/favorites/[username]/movies/[title]</td>
+        <td>POST</td>
+        <td>None</td>
+        <td>
+          A message indicating the movie title was added to the user's favorites
+          list.
+        </td>
+      </tr>
+      <tr>
+        <td>Delete a movie from the user's favorites list</td>
+        <td>/favorites/[username]/movies/[id]</td>
+        <td>DELETE</td>
+        <td>None</td>
+        <td>
+          A message indicating the movie title was deleted from the user's
+          favorites list.
+        </td>
+      </tr>
+    </table>
   </body>
 </html>
