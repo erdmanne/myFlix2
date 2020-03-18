@@ -7,6 +7,7 @@ const app = express();
 
 app.use(bodyParser.json());
 
+//list of movies
 let movies = [
   {
     id: 1,
@@ -33,6 +34,29 @@ let movies = [
   }
 ];
 
+//list of users
+let User = [
+  {
+    id: 1,
+    username: "ee",
+    password: "password123",
+    email: "example@gmail.com",
+    date_of_birth: "May 12, 1989",
+    Favorites: {}
+  }
+];
+
+// List of Favorites
+
+let Favorites = [
+  {
+    title: "Toy Story",
+    genre: "family",
+    description: "good to watch with your family",
+    director: "Walt Disney"
+  }
+];
+
 // Gets the list of data about ALL movies = working/done
 app.get("/api/movies", (req, res) => {
   res.json(movies);
@@ -47,8 +71,8 @@ app.get("/api/movies/:title", (req, res) => {
   );
 });
 
-//Get all data about by director // result in postman is empty - why??
-app.get("/api/movies/:director", (req, res) => {
+//Get all data about by director // working
+app.get("/api/movies/directors/:director", (req, res) => {
   res.json(
     movies.find(movies => {
       return movies.director === req.params.director;
@@ -64,8 +88,8 @@ app.get("/api/genre/:title", function(req, res) {
   res.send(movie);
 });
 
-// Adds data for a new movie to our list of movies. not working in postman***
-app.post("api/movies", (req, res) => {
+// Adds data for a new movie to our list of movies. working on postman
+app.post("/api/movies", (req, res) => {
   let newMovie = req.body;
 
   if (!newMovie.title) {
@@ -78,17 +102,20 @@ app.post("api/movies", (req, res) => {
   }
 });
 
-// Deletes a movie from our list by ID - not working in postman****
-app.delete("/api/movies/:id", (req, res) => {
-  let movies = movies.find(movies => {
-    return movies.id === req.params.id;
+// Deletes a movie from their fav. list by ID - not working in postman****
+app.delete("/api/users/movies/:id", (req, res) => {
+  const movieId = parseInt(req.params.id);
+  let movie = movies.find(movies => {
+    return movies.id === movieId;
   });
 
-  if (movies) {
-    movies = movies.filter(function(obj) {
-      return obj.id !== req.params.id;
+  if (movie) {
+    movies.filter(function(obj) {
+      return obj.id !== movieId;
     });
     res.status(201).send("Movie " + req.params.id + " was deleted.");
+  } else {
+    res.status(401).send("Movie with id" + req.params.id + " was not found");
   }
 });
 
@@ -102,59 +129,53 @@ app.get("/api/genre/:title", function(req, res) {
   res.send(movie);
 });
 
-/*******************-----not yet done for movies:
+// Adds data for a new user to our list of user. allow new user to register- working
+app.post("/api/user", (req, res) => {
+  let newUser = req.body;
 
-// Update the "grade" of a student by student name/class name
-app.put("/students/:name/:class/:grade", (req, res) => {
-  let student = students.find(student => {
-    return student.name === req.params.name;
+  if (!newUser.name) {
+    const message = "Missing name in request body";
+    res.status(400).send(message);
+  } else {
+    newUser.id = uuid.v4();
+    user.push(newUser);
+    res.status(201).send(newUser);
+  }
+});
+
+//allow user to update user information -->not working in postman****
+app.put("/api/user/:username", (req, res) => {
+  res.send("Successful user information updated");
+});
+
+//delete user information - deregister by ID
+app.delete("/api/user/:username", (req, res) => {
+  let user = User.find(user => {
+    return user.username === req.params.username;
   });
-
-  if (student) {
-    student.classes[req.params.class] = parseInt(req.params.grade);
+  if (user) {
+    User.filter(function(obj) {
+      return obj.username !== req.params.username;
+    });
     res
       .status(201)
-      .send(
-        "Student " +
-          req.params.name +
-          " was assigned a grade of " +
-          req.params.grade +
-          " in " +
-          req.params.class
-      );
-  } else {
-    res
-      .status(404)
-      .send("Student with the name " + req.params.name + " was not found.");
+      .send(req.params.username + " has been removed from registry .");
   }
 });
 
-// Gets the GPA of a student
-app.get("/students/:name/gpa", (req, res) => {
-  let student = students.find(student => {
-    return student.name === req.params.name;
-  });
+// Add movies to user's list of favorites
+app.post("/api/user/:username/favorites", (req, res) => {
+  let newFavorite = req.body;
 
-  if (student) {
-    let classesGrades = Object.values(student.classes); // Object.values() filters out object's keys and keeps the values that are returned as a new array
-    let sumOfGrades = 0;
-    classesGrades.forEach(grade => {
-      sumOfGrades = sumOfGrades + grade;
-    });
-
-    let gpa = sumOfGrades / classesGrades.length;
-    console.log(sumOfGrades);
-    console.log(classesGrades.length);
-    console.log(gpa);
-    res.status(201).send("" + gpa);
-    //res.status(201).send(gpa);
+  if (!newFavorite.title) {
+    const message = "Missing movie title in request body";
+    res.status(400).send(message);
   } else {
-    res
-      .status(404)
-      .send("Student with the name " + req.params.name + " was not found.");
+    newFavorite.id = uuid.v4();
+    Favorites.push(newFavorite);
+    res.status(201).send(newFavorite);
   }
 });
-*/
 
 app.listen(8080, () => {
   console.log(`Your app is listening on port 8080`);

@@ -79,6 +79,36 @@
           favorites list.
         </td>
       </tr>
+      <tr>
+        <td>Update a user's information</td>
+        <td>/users/[username]/settings</td>
+        <td>PUT</td>
+        <td>
+          A JSON object holding data about the user to add, structured like:
+          <p style="color: pink">
+            { username : 'ee', password : 'password123', email :
+            'example@gmail.com', date_of_birth : "May 12, 1989" }
+          </p>
+        </td>
+        <td>A text message indicating the user's information was updated</td>
+      </tr>
+      <tr>
+        <td>Add movies to user's list of favorites</td>
+        <td>/users/[username]/favorites/[movie_name]</td>
+        <td>POST</td>
+        <td>None</td>
+        <td>
+          A message indicating the movie was added to the user's list of
+          favorites
+        </td>
+      </tr>
+      <tr>
+        <td>Remove user accounts</td>
+        <td>/users/[username]/setting</td>
+        <td>DELETE</td>
+        <td>None</td>
+        <td>A message indicating the user's account was deleted</td>
+      </tr>
     </table>
   </body>
 </html>
