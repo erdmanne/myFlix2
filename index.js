@@ -35,7 +35,7 @@ let movies = [
 ];
 
 //list of users
-let User = [
+let user = [
   {
     id: 1,
     username: "ee",
@@ -133,7 +133,7 @@ app.get("/api/genre/:title", function(req, res) {
 app.post("/api/user", (req, res) => {
   let newUser = req.body;
 
-  if (!newUser.name) {
+  if (!newUser.username) {
     const message = "Missing name in request body";
     res.status(400).send(message);
   } else {
